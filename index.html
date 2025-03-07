@@ -3,18 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IP ve Konum Bilgileri</title>
-</head>
-<body>
-    <div class="container">
-        <h1>IP ve Konum Bilgileri</h1>
-        <p id="ip">IP Adresiniz: Yükleniyor...</p>
-        <p id="location">Konum: Yükleniyor...</p>
-        <p id="isp">İnternet Servis Sağlayıcı: Yükleniyor...</p>
-        <p id="time">Tarih ve Saat: Yükleniyor...</p>
-        <p id="weather">Hava Durumu: Yükleniyor...</p>
-        <p id="currency">Döviz Kurları: Yükleniyor...</p>
-    </div>
+    <title>Bisik.tr - Saçma Ama Eğlenceli</title>
     <style>
         * {
             margin: 0;
@@ -22,8 +11,8 @@
             box-sizing: border-box;
         }
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
+            font-family: Comic Sans MS, cursive, sans-serif;
+            background-color: #ffeb3b;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -36,52 +25,36 @@
             background: white;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
             width: 100%;
+            border: 5px dashed red;
         }
         h1 {
             margin-bottom: 20px;
-            font-size: 22px;
-            color: #4CAF50;
+            font-size: 26px;
+            color: #e91e63;
+            text-transform: uppercase;
         }
         p {
-            font-size: 16px;
+            font-size: 18px;
             margin: 10px 0;
             font-weight: bold;
         }
-    </style>
-    <script>
-        async function fetchIPInfo() {
-            try {
-                const ipResponse = await fetch('https://api.ipify.org/?format=json');
-                const ipData = await ipResponse.json();
-                document.getElementById('ip').textContent = `IP Adresiniz: ${ipData.ip}`;
-                
-                const geoResponse = await fetch(`https://ipapi.co/${ipData.ip}/json/`);
-                const geoData = await geoResponse.json();
-                document.getElementById('location').textContent = `Konum: ${geoData.city}, ${geoData.country_name}`;
-                document.getElementById('isp').textContent = `İnternet Servis Sağlayıcı: ${geoData.org}`;
-                
-                document.getElementById('time').textContent = `Tarih ve Saat: ${geoData.utc_offset} UTC`;
-                
-                const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${geoData.latitude}&lon=${geoData.longitude}&appid=04b039b5ff15627ad3694423fbca0a68&units=metric&lang=tr`);
-                if (!weatherResponse.ok) throw new Error('Hava durumu bilgisi alınamadı.');
-                const weatherData = await weatherResponse.json();
-                document.getElementById('weather').textContent = `Hava Durumu: ${weatherData.weather[0].description}, ${weatherData.main.temp}°C`;
-                
-                const currencyResponse = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
-                const currencyData = await currencyResponse.json();
-                document.getElementById('currency').textContent = `Döviz Kurları: 1 USD = ${currencyData.rates.TRY} TRY, 1 EUR = ${currencyData.rates.EUR} USD`;
-                
-            } catch (error) {
-                console.error('Hata oluştu:', error);
-                document.getElementById('currency').textContent = 'Döviz Kurları: Bilgi alınamadı';
-                document.getElementById('weather').textContent = 'Hava Durumu: Bilgi alınamadı';
-                document.getElementById('time').textContent = 'Tarih ve Saat: Bilgi alınamadı';
-            }
+        .emoji {
+            font-size: 30px;
         }
-        fetchIPInfo();
-    </script>
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bisik.tr 🚴‍♂️</h1>
+        <p class="emoji">😂🤣😜</p>
+        <p>Hoş geldiniz! Burası bisikletle hiçbir alakası olmayan ama eğlenceli bir site!</p>
+        <p>Bugün çok komiksin, çünkü buradasın!</p>
+        <p>Belki de en saçma siteyi ziyaret ediyorsun! 🏆</p>
+        <p>Keyif al, yoksa seni 🚲 ile kovalarız!</p>
+        <p class="emoji">🚀🔥💥</p>
+    </div>
 </body>
 </html>
