@@ -65,20 +65,23 @@
                 document.getElementById('location').textContent = `Konum: ${geoData.city}, ${geoData.country_name}`;
                 document.getElementById('isp').textContent = `İnternet Servis Sağlayıcı: ${geoData.org}`;
                 
-                const timeResponse = await fetch('http://worldtimeapi.org/api/ip');
+                const timeResponse = await fetch(`https://worldtimeapi.org/api/timezone/${geoData.timezone}`);
                 const timeData = await timeResponse.json();
                 document.getElementById('time').textContent = `Tarih ve Saat: ${new Date(timeData.datetime).toLocaleString()}`;
                 
-                const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${geoData.city}&appid=YOUR_API_KEY&units=metric&lang=tr`);
+                const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${geoData.latitude}&lon=${geoData.longitude}&appid=04b039b5ff15627ad3694423fbca0a68&units=metric&lang=tr`);
                 const weatherData = await weatherResponse.json();
                 document.getElementById('weather').textContent = `Hava Durumu: ${weatherData.weather[0].description}, ${weatherData.main.temp}°C`;
                 
-                const currencyResponse = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+                const currencyResponse = await fetch('https://open.er-api.com/v6/latest/USD');
                 const currencyData = await currencyResponse.json();
                 document.getElementById('currency').textContent = `Döviz Kurları: 1 USD = ${currencyData.rates.TRY} TRY, 1 EUR = ${currencyData.rates.EUR} USD`;
                 
             } catch (error) {
                 console.error('Hata oluştu:', error);
+                document.getElementById('currency').textContent = 'Döviz Kurları: Bilgi alınamadı';
+                document.getElementById('weather').textContent = 'Hava Durumu: Bilgi alınamadı';
+                document.getElementById('time').textContent = 'Tarih ve Saat: Bilgi alınamadı';
             }
         }
         fetchIPInfo();
