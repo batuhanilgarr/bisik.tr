@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IP ve Konum Bilgileri</title>
+</head>
+<body>
+    <div class="container">
+        <h1>IP ve Konum Bilgileri</h1>
+        <p id="ip">IP Adresiniz: Yükleniyor...</p>
+        <p id="location">Konum: Yükleniyor...</p>
+        <p id="isp">İnternet Servis Sağlayıcı: Yükleniyor...</p>
+        <p id="time">Tarih ve Saat: Yükleniyor...</p>
+        <p id="weather">Hava Durumu: Yükleniyor...</p>
+        <p id="currency">Döviz Kurları: Yükleniyor...</p>
+    </div>
     <style>
         * {
             margin: 0;
@@ -55,6 +66,7 @@
                 document.getElementById('time').textContent = `Tarih ve Saat: ${geoData.utc_offset} UTC`;
                 
                 const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${geoData.latitude}&lon=${geoData.longitude}&appid=04b039b5ff15627ad3694423fbca0a68&units=metric&lang=tr`);
+                if (!weatherResponse.ok) throw new Error('Hava durumu bilgisi alınamadı.');
                 const weatherData = await weatherResponse.json();
                 document.getElementById('weather').textContent = `Hava Durumu: ${weatherData.weather[0].description}, ${weatherData.main.temp}°C`;
                 
@@ -71,18 +83,5 @@
         }
         fetchIPInfo();
     </script>
-</head>
-<body>
-    <div class="container">
-        <h1>IP ve Konum Bilgileri</h1>
-        <p id="ip">IP Adresiniz: Yükleniyor...</p>
-        <p id="location">Konum: Yükleniyor...</p>
-        <p id="isp">İnternet Servis Sağlayıcı: Yükleniyor...</p>
-        <p id="time">Tarih ve Saat: Yükleniyor...</p>
-        <p id="weather">Hava Durumu: Yükleniyor...</p>
-        <p id="currency">Döviz Kurları: Yükleniyor...</p>
-    </div>
-    
-    
 </body>
 </html>
