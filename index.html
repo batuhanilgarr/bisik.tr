@@ -4,19 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IP ve Konum Bilgileri</title>
-    <link rel="stylesheet" href="styles.css">
-    <script defer src="script.js"></script>
-</head>
-<body>
-    <div class="container">
-        <h1>IP ve Konum Bilgileri</h1>
-        <p id="ip">IP Adresiniz: Yükleniyor...</p>
-        <p id="location">Konum: Yükleniyor...</p>
-        <p id="isp">İnternet Servis Sağlayıcı: Yükleniyor...</p>
-        <p id="time">Tarih ve Saat: Yükleniyor...</p>
-        <p id="weather">Hava Durumu: Yükleniyor...</p>
-        <p id="currency">Döviz Kurları: Yükleniyor...</p>
-    </div>
     <style>
         * {
             margin: 0;
@@ -65,15 +52,13 @@
                 document.getElementById('location').textContent = `Konum: ${geoData.city}, ${geoData.country_name}`;
                 document.getElementById('isp').textContent = `İnternet Servis Sağlayıcı: ${geoData.org}`;
                 
-                const timeResponse = await fetch(`https://worldtimeapi.org/api/timezone/${geoData.timezone}`);
-                const timeData = await timeResponse.json();
-                document.getElementById('time').textContent = `Tarih ve Saat: ${new Date(timeData.datetime).toLocaleString()}`;
+                document.getElementById('time').textContent = `Tarih ve Saat: ${geoData.utc_offset} UTC`;
                 
-                const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${geoData.latitude}&lon=${geoData.longitude}&appid=04b039b5ff15627ad3694423fbca0a68&units=metric&lang=tr`);
+                const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${geoData.latitude}&lon=${geoData.longitude}&appid=YOUR_API_KEY&units=metric&lang=tr`);
                 const weatherData = await weatherResponse.json();
                 document.getElementById('weather').textContent = `Hava Durumu: ${weatherData.weather[0].description}, ${weatherData.main.temp}°C`;
                 
-                const currencyResponse = await fetch('https://open.er-api.com/v6/latest/USD');
+                const currencyResponse = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
                 const currencyData = await currencyResponse.json();
                 document.getElementById('currency').textContent = `Döviz Kurları: 1 USD = ${currencyData.rates.TRY} TRY, 1 EUR = ${currencyData.rates.EUR} USD`;
                 
@@ -86,5 +71,18 @@
         }
         fetchIPInfo();
     </script>
+</head>
+<body>
+    <div class="container">
+        <h1>IP ve Konum Bilgileri</h1>
+        <p id="ip">IP Adresiniz: Yükleniyor...</p>
+        <p id="location">Konum: Yükleniyor...</p>
+        <p id="isp">İnternet Servis Sağlayıcı: Yükleniyor...</p>
+        <p id="time">Tarih ve Saat: Yükleniyor...</p>
+        <p id="weather">Hava Durumu: Yükleniyor...</p>
+        <p id="currency">Döviz Kurları: Yükleniyor...</p>
+    </div>
+    
+    
 </body>
 </html>
