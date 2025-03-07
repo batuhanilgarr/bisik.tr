@@ -54,7 +54,7 @@
                 
                 document.getElementById('time').textContent = `Tarih ve Saat: ${geoData.utc_offset} UTC`;
                 
-                const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${geoData.latitude}&lon=${geoData.longitude}&appid=YOUR_API_KEY&units=metric&lang=tr`);
+                const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${geoData.latitude}&lon=${geoData.longitude}&appid=04b039b5ff15627ad3694423fbca0a68&units=metric&lang=tr`);
                 const weatherData = await weatherResponse.json();
                 document.getElementById('weather').textContent = `Hava Durumu: ${weatherData.weather[0].description}, ${weatherData.main.temp}°C`;
                 
