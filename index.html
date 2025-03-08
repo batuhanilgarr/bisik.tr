@@ -16,12 +16,6 @@
             text-align: center;
             color: black;
             padding: 20px;
-            animation: shake 0.5s infinite;
-        }
-        @keyframes shake {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(2deg); }
-            75% { transform: rotate(-2deg); }
         }
         .container {
             background: white;
@@ -48,20 +42,23 @@
             from { transform: scale(1); }
             to { transform: scale(1.1); }
         }
-        #boomButton {
-            display: block;
-            font-size: 20px;
+        button {
+            font-size: 18px;
             font-weight: bold;
-            padding: 10px 20px;
+            padding: 10px;
             cursor: pointer;
-            text-transform: uppercase;
-            margin-top: 20px;
+            margin-top: 15px;
             border: 3px dashed;
-            animation: colorChange 0.5s infinite alternate, shake 0.5s infinite;
+            animation: colorChange 0.5s infinite alternate;
         }
         @keyframes colorChange {
             0%, 100% { background: red; color: yellow; border-color: yellow; }
             50% { background: yellow; color: red; border-color: red; }
+        }
+        input {
+            margin-top: 15px;
+            padding: 8px;
+            font-size: 16px;
         }
     </style>
 </head>
@@ -73,8 +70,11 @@
         <p id="isp">İnternet Sağlayıcın: BİSİKTİRNET 🤡</p>
         <p id="time">Saat: Zamanda kayboldun ⏳</p>
         <button id="boomButton">Vine Boom!</button>
-        <input type="password" id="passwordInput" placeholder="Şifreyi gir" />
-        <button id="submitButton">Giriş</button>
+        
+        <div id="loginContainer">
+            <input type="password" id="passwordInput" placeholder="Şifreyi gir">
+            <button id="submitButton">Giriş</button>
+        </div>
     </div>
     
     <script>
@@ -82,28 +82,26 @@
             let audio = new Audio("https://www.myinstants.com/media/sounds/vine-boom.mp3");
             audio.play();
         });
-        
+
         setTimeout(() => {
             document.body.style.transition = "background 1s";
             document.body.style.background = "red";
-            document.getElementById("mainContainer").innerHTML = "<h1>💀 HACKLENDİN! 💀</h1><p>Kaçamazsın... 🕵️‍♂️</p>";
-            document.body.style.transform = "rotate(180deg)";
-            setTimeout(() => {
-                document.body.style.background = "black";
-                document.body.style.transform = "rotate(0deg)";
-                document.getElementById("mainContainer").innerHTML = "<h1>Şaka Şaka 😂</h1><p>Git bir nefes al...</p>";
-            }, 5000);
+            let container = document.getElementById("mainContainer");
+            if (container) {
+                container.innerHTML = "<h1>💀 HACKLENDİN! 💀</h1><p>Kaçamazsın... 🕵️‍♂️</p>";
+                document.body.style.transform = "rotate(180deg)";
+                setTimeout(() => {
+                    document.body.style.background = "black";
+                    document.body.style.transform = "rotate(0deg)";
+                    container.innerHTML = "<h1>Şaka Şaka 😂</h1><p>Git bir nefes al...</p>";
+                }, 5000);
+            }
         }, 7000);
 
-        document.addEventListener("mousemove", function(event) {
+        document.addEventListener("mousemove", function() {
             let x = (Math.random() - 0.5) * 20;
             let y = (Math.random() - 0.5) * 20;
             document.body.style.transform = `translate(${x}px, ${y}px)`;
-        });
-
-        document.addEventListener("keydown", function(event) {
-            event.preventDefault();
-            alert(`Tuş bozuldu! ${event.key.toUpperCase()} yerine ${String.fromCharCode(event.keyCode + 1)} yazacaksın!`);
         });
 
         (function() {
@@ -117,13 +115,6 @@
             console.log('%c', devtools);
         })();
 
-        Object.defineProperty(window, 'hackInfo', {
-            get: function() {
-                alert("Gizli bilgileri açtın! 😈");
-                return "Dikkat et, seni bulabilirler...";
-            }
-        });
-
         const correctPassword = "clown";
         let failCount = 0;
 
@@ -135,12 +126,17 @@
                 failCount++;
                 shakeScreen();
                 if (failCount >= 3) {
-                    document.getElementById("mainContainer").innerHTML = "<h1>💀 HATA! 💀</h1><p>Artık çıkamazsın...</p>";
-                    setTimeout(() => { document.body.innerHTML = "<h1 style='color:red;'>💀 GEÇ KALDIN 💀</h1>"; }, 3000);
+                    let container = document.getElementById("mainContainer");
+                    if (container) {
+                        container.innerHTML = "<h1>💀 HATA! 💀</h1><p>Artık çıkamazsın...</p>";
+                    }
+                    setTimeout(() => { 
+                        document.body.innerHTML = "<h1 style='color:red;'>💀 GEÇ KALDIN 💀</h1>"; 
+                    }, 3000);
                 }
             }
         });
-        
+
         function unlockSite() {
             location.reload();
         }
