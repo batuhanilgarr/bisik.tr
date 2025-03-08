@@ -60,6 +60,40 @@
             margin: 10px 0;
             font-weight: bold;
         }
+
+        #boomButton {
+            display: block;
+            background: red;
+            color: yellow;
+            font-size: 20px;
+            font-weight: bold;
+            border: 3px dashed yellow;
+            padding: 10px 20px;
+            cursor: pointer;
+            text-transform: uppercase;
+            animation: shake 0.5s infinite alternate, blink 1s infinite;
+        }
+        
+        #boomButton:hover {
+            background: yellow;
+            color: red;
+            border-color: red;
+        }
+        
+        @keyframes shake {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(3deg); }
+            50% { transform: rotate(0deg); }
+            75% { transform: rotate(-3deg); }
+            100% { transform: rotate(0deg); }
+        }
+        
+        @keyframes blink {
+            0% { border-color: yellow; }
+            50% { border-color: red; }
+            100% { border-color: yellow; }
+        }
+
     </style>
 </head>
 <body>
@@ -71,24 +105,23 @@
         <p id="time">Saat: Zamanda kayboldun ⏳</p>
         <p id="weather">Hava Durumu: Allah bilir 🤷‍♂️</p>
         <p id="currency">Döviz Kurları: Paran pul oldu 🤑</p>
+        <button id="boomButton" style="display:none;">Vine Boom!</button>
     </div>
-    <button id="boomButton" style="display:none;">Vine Boom!</button>
+    
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            let audio = new Audio("https://www.myinstants.com/media/sounds/vine-boom.mp3");
-            let button = document.getElementById("boomButton");
-    
+            const button = document.createElement("button");
+            button.id = "boomButton";
+            button.innerText = "Vine Boom!";
+            document.body.appendChild(button);
+        
             button.addEventListener("click", () => {
+                let audio = new Audio("https://www.myinstants.com/media/sounds/vine-boom.mp3");
                 audio.play();
-                button.style.display = "none";
             });
-    
-            setTimeout(() => {
-                button.style.display = "block";
-                alert("BİSİKTİR! Buraya nasıl geldin?! Tıklasana!");
-            }, 3000);
         });
+
     </script>
 </body>
 </html>
