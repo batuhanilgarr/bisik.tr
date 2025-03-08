@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BİSİKTİR! 🤡</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Comic Sans MS', cursive, sans-serif;
             background-color: black;
@@ -23,11 +19,9 @@
             animation: shake 0.5s infinite;
         }
         @keyframes shake {
-            0% { transform: rotate(0deg); }
+            0%, 100% { transform: rotate(0deg); }
             25% { transform: rotate(2deg); }
-            50% { transform: rotate(0deg); }
             75% { transform: rotate(-2deg); }
-            100% { transform: rotate(0deg); }
         }
         .container {
             background: white;
@@ -40,9 +34,8 @@
             animation: blink 1s infinite;
         }
         @keyframes blink {
-            0% { border-color: red; }
+            0%, 100% { border-color: red; }
             50% { border-color: yellow; }
-            100% { border-color: red; }
         }
         h1 {
             margin-bottom: 20px;
@@ -55,12 +48,6 @@
             from { transform: scale(1); }
             to { transform: scale(1.1); }
         }
-        p {
-            font-size: 18px;
-            margin: 10px 0;
-            font-weight: bold;
-        }
-
         #boomButton {
             display: block;
             font-size: 20px;
@@ -72,24 +59,22 @@
             border: 3px dashed;
             animation: colorChange 0.5s infinite alternate, shake 0.5s infinite;
         }
-        
         @keyframes colorChange {
-            0% { background: red; color: yellow; border-color: yellow; }
+            0%, 100% { background: red; color: yellow; border-color: yellow; }
             50% { background: yellow; color: red; border-color: red; }
-            100% { background: red; color: yellow; border-color: yellow; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="mainContainer">
         <h1>🛑 BİSİKTİR! 🛑</h1>
         <p id="ip">IP Adresin: Bilinmiyor... çünkü FBI peşinde! 🚔</p>
         <p id="location">Konum: Uzay boşluğu... 🌌</p>
         <p id="isp">İnternet Sağlayıcın: BİSİKTİRNET 🤡</p>
         <p id="time">Saat: Zamanda kayboldun ⏳</p>
-        <p id="weather">Hava Durumu: Allah bilir 🤷‍♂️</p>
-        <p id="currency">Döviz Kurları: Paran pul oldu 🤑</p>
         <button id="boomButton">Vine Boom!</button>
+        <input type="password" id="passwordInput" placeholder="Şifreyi gir" />
+        <button id="submitButton">Giriş</button>
     </div>
     
     <script>
@@ -97,6 +82,74 @@
             let audio = new Audio("https://www.myinstants.com/media/sounds/vine-boom.mp3");
             audio.play();
         });
+        
+        setTimeout(() => {
+            document.body.style.transition = "background 1s";
+            document.body.style.background = "red";
+            document.getElementById("mainContainer").innerHTML = "<h1>💀 HACKLENDİN! 💀</h1><p>Kaçamazsın... 🕵️‍♂️</p>";
+            document.body.style.transform = "rotate(180deg)";
+            setTimeout(() => {
+                document.body.style.background = "black";
+                document.body.style.transform = "rotate(0deg)";
+                document.getElementById("mainContainer").innerHTML = "<h1>Şaka Şaka 😂</h1><p>Git bir nefes al...</p>";
+            }, 5000);
+        }, 7000);
+
+        document.addEventListener("mousemove", function(event) {
+            let x = (Math.random() - 0.5) * 20;
+            let y = (Math.random() - 0.5) * 20;
+            document.body.style.transform = `translate(${x}px, ${y}px)`;
+        });
+
+        document.addEventListener("keydown", function(event) {
+            event.preventDefault();
+            alert(`Tuş bozuldu! ${event.key.toUpperCase()} yerine ${String.fromCharCode(event.keyCode + 1)} yazacaksın!`);
+        });
+
+        (function() {
+            var devtools = /./;
+            devtools.toString = function() {
+                setTimeout(() => {
+                    alert('Konsolu açtın... seni izliyorum. 🕵️‍♂️');
+                    document.body.innerHTML = "<h1 style='color:red;'>💀 GİZLİ BİRŞEYLER ÖĞRENMEYE ÇALIŞIYORSUN 💀</h1>";
+                }, 2000);
+            };
+            console.log('%c', devtools);
+        })();
+
+        Object.defineProperty(window, 'hackInfo', {
+            get: function() {
+                alert("Gizli bilgileri açtın! 😈");
+                return "Dikkat et, seni bulabilirler...";
+            }
+        });
+
+        const correctPassword = "clown";
+        let failCount = 0;
+
+        document.getElementById("submitButton").addEventListener("click", function() {
+            let input = document.getElementById("passwordInput").value.toLowerCase();
+            if (input === correctPassword) {
+                unlockSite();
+            } else {
+                failCount++;
+                shakeScreen();
+                if (failCount >= 3) {
+                    document.getElementById("mainContainer").innerHTML = "<h1>💀 HATA! 💀</h1><p>Artık çıkamazsın...</p>";
+                    setTimeout(() => { document.body.innerHTML = "<h1 style='color:red;'>💀 GEÇ KALDIN 💀</h1>"; }, 3000);
+                }
+            }
+        });
+        
+        function unlockSite() {
+            location.reload();
+        }
+        
+        function shakeScreen() {
+            document.body.style.transform = "rotate(5deg)";
+            setTimeout(() => { document.body.style.transform = "rotate(-5deg)"; }, 100);
+            setTimeout(() => { document.body.style.transform = "rotate(0deg)"; }, 200);
+        }
     </script>
 </body>
 </html>
