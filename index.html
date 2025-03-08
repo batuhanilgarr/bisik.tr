@@ -3,20 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BİSİKTİR!</title>
-    <link rel="stylesheet" href="styles.css">
-    <script defer src="script.js"></script>
-</head>
-<body>
-    <div class="container">
-        <h1>🛑 BİSİKTİR! 🛑</h1>
-        <p id="ip">IP Adresin: Bilinmiyor... çünkü FBI peşinde!</p>
-        <p id="location">Konum: Uzay boşluğu...</p>
-        <p id="isp">İnternet Sağlayıcın: Olsa iyi olurdu 🤡</p>
-        <p id="time">Saat: Zamanda yolculuk yapılıyor...</p>
-        <p id="weather">Hava Durumu: Dışarı çıkınca görürsün 😎</p>
-        <p id="currency">Döviz Kurları: Yatırım tavsiyesi değildir ama paranın değeri düşüyor! 📉</p>
-    </div>
+    <title>BİSİKTİR! 🤡</title>
     <style>
         * {
             margin: 0;
@@ -24,35 +11,81 @@
             box-sizing: border-box;
         }
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
             background-color: black;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            color: red;
             text-align: center;
+            color: yellow;
             padding: 20px;
+            animation: shake 0.5s infinite;
+        }
+        @keyframes shake {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(2deg); }
+            50% { transform: rotate(0deg); }
+            75% { transform: rotate(-2deg); }
+            100% { transform: rotate(0deg); }
         }
         .container {
             background: white;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(255, 0, 0, 0.8);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 1);
             max-width: 400px;
             width: 100%;
-            border: 3px solid red;
+            border: 5px dashed red;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0% { border-color: red; }
+            50% { border-color: yellow; }
+            100% { border-color: red; }
         }
         h1 {
             margin-bottom: 20px;
-            font-size: 30px;
+            font-size: 40px;
             color: red;
+            text-shadow: 3px 3px yellow;
+            animation: zoom 0.5s infinite alternate;
+        }
+        @keyframes zoom {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
         }
         p {
-            font-size: 16px;
+            font-size: 18px;
             margin: 10px 0;
             font-weight: bold;
         }
     </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛑 BİSİKTİR! 🛑</h1>
+        <p id="ip">IP Adresin: Bilinmiyor... çünkü FBI peşinde! 🚔</p>
+        <p id="location">Konum: Uzay boşluğu... 🌌</p>
+        <p id="isp">İnternet Sağlayıcın: BİSİKTİRNET 🤡</p>
+        <p id="time">Saat: Zamanda kayboldun ⏳</p>
+        <p id="weather">Hava Durumu: Allah bilir 🤷‍♂️</p>
+        <p id="currency">Döviz Kurları: Paran pul oldu 🤑</p>
+    </div>
+    <script>
+        document.addEventListener("mousemove", () => {
+            document.title = ["BİSİKTİR! 🤡", "Ne lan burası?!", "Hemen Çık! 🚀", "Allahım Sabır!"].sort(() => Math.random() - 0.5)[0];
+        });
+
+        setInterval(() => {
+            document.body.style.backgroundColor = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
+        }, 500);
+
+        let audio = new Audio("https://www.myinstants.com/media/sounds/vine-boom.mp3");
+        setTimeout(() => {
+            audio.play();
+            alert("BİSİKTİR! Buraya nasıl geldin?!");
+        }, 3000);
+    </script>
 </body>
 </html>
