@@ -109,7 +109,7 @@
         tr:hover {
             background-color: #f5f7fa;
         }
-        .severity-high, .severity-critical {
+        .severity-high {
             background-color: #f8d7da;
             color: #721c24;
             padding: 3px 8px;
@@ -210,14 +210,6 @@
             font-weight: 600;
             margin: 10px 0 0;
         }
-        .api-note {
-            background-color: #fff3cd;
-            color: #856404;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border-left: 5px solid #ffeeba;
-        }
     </style>
 </head>
 <body>
@@ -225,10 +217,6 @@
         <header>
             <h1>NVD Güvenlik Açıkları Gösterge Paneli</h1>
         </header>
-
-        <div class="api-note">
-            <strong>Not:</strong> Bu demo sürümü, CORS kısıtlamaları nedeniyle gerçek NVD API yerine örnek veriler kullanmaktadır. Gerçek uygulamada, bir backend servisi veya proxy sunucu kullanarak API'ye erişebilirsiniz.
-        </div>
 
         <div class="search-container">
             <div class="controls">
@@ -251,6 +239,7 @@
                         <option value="10">10</option>
                         <option value="20" selected>20</option>
                         <option value="50">50</option>
+                        <option value="100">100</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -306,12 +295,14 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // API URL
+            const baseApiUrl = 'https://services.nvd.nist.gov/rest/json/cves/2.0';
+            
             // State variables
             let currentPage = 1;
             let totalResults = 0;
             let resultsPerPage = 20;
             let currentData = [];
-            let mockData = [];
             
             // Stats counters
             let totalVulnerabilities = 0;
@@ -334,9 +325,6 @@
             const mediumSeverityCountElement = document.getElementById('mediumSeverityCount');
             const lowSeverityCountElement = document.getElementById('lowSeverityCount');
             
-            // Generate mock data
-            generateMockData();
-            
             // Event listeners
             searchButton.addEventListener('click', fetchVulnerabilities);
             resultsPerPageSelect.addEventListener('change', function() {
@@ -355,135 +343,66 @@
             // Initial load
             fetchVulnerabilities();
             
-            function generateMockData() {
-                // Generate 100 mock CVE entries
-                const severities = ['HIGH', 'MEDIUM', 'LOW', 'CRITICAL'];
-                const descriptions = [
-                    'A buffer overflow vulnerability in the networking component allows remote attackers to execute arbitrary code.',
-                    'Cross-site scripting (XSS) vulnerability in the web interface allows attackers to inject malicious scripts.',
-                    'SQL injection vulnerability in the login form allows attackers to bypass authentication.',
-                    'Information disclosure vulnerability in the API allows unauthorized access to sensitive data.',
-                    'Denial of service vulnerability in the processing engine allows attackers to crash the application.',
-                    'Command injection vulnerability in the admin console allows privilege escalation.',
-                    'Authentication bypass vulnerability in the user management module.',
-                    'Path traversal vulnerability allows access to files outside the intended directory.',
-                    'Race condition in the file handling component allows unauthorized operations.',
-                    'Integer overflow in the image processing library leads to memory corruption.'
-                ];
-                
-                for (let i = 1; i <= 100; i++) {
-                    const year = 2021 + Math.floor(Math.random() * 4);
-                    const month = Math.floor(Math.random() * 12) + 1;
-                    const day = Math.floor(Math.random() * 28) + 1;
-                    const publishedDate = new Date(year, month - 1, day);
-                    const lastModifiedDate = new Date(publishedDate);
-                    lastModifiedDate.setDate(lastModifiedDate.getDate() + Math.floor(Math.random() * 30));
-                    
-                    const severity = severities[Math.floor(Math.random() * severities.length)];
-                    const baseScore = severity === 'CRITICAL' ? 9 + Math.random() :
-                                       severity === 'HIGH' ? 7 + Math.random() * 2 :
-                                       severity === 'MEDIUM' ? 4 + Math.random() * 3 :
-                                       1 + Math.random() * 3;
-                    
-                    const descriptionIndex = Math.floor(Math.random() * descriptions.length);
-                    
-                    const cveItem = {
-                        cve: {
-                            id: `CVE-${year}-${10000 + i}`,
-                            published: publishedDate.toISOString(),
-                            lastModified: lastModifiedDate.toISOString(),
-                            descriptions: [
-                                {
-                                    lang: 'en',
-                                    value: descriptions[descriptionIndex]
-                                }
-                            ],
-                            metrics: {
-                                cvssMetricV3: [
-                                    {
-                                        cvssData: {
-                                            baseSeverity: severity,
-                                            baseScore: baseScore.toFixed(1)
-                                        }
-                                    }
-                                ]
-                            },
-                            references: Array(Math.floor(Math.random() * 5) + 1).fill().map((_, idx) => ({
-                                url: `https://example.com/vulnerability/${year}-${10000 + i}/ref${idx + 1}`
-                            })),
-                            configurations: [
-                                {
-                                    nodes: [
-                                        {
-                                            cpeMatch: [
-                                                {
-                                                    criteria: `cpe:2.3:a:example:product:${1 + Math.floor(Math.random() * 5)}.0:*:*:*:*:*:*:*`
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    };
-                    
-                    mockData.push(cveItem);
-                }
-            }
-            
             function fetchVulnerabilities() {
                 // Show loader
                 loader.style.display = 'block';
                 vulnerabilityTableBody.innerHTML = '';
                 
                 // Build query parameters
-                const keyword = keywordInput.value.trim().toLowerCase();
+                const keyword = keywordInput.value.trim();
                 const severity = severitySelect.value;
                 const startIndex = (currentPage - 1) * resultsPerPage;
                 
-                // Filter mock data based on search criteria
-                let filteredData = [...mockData];
+                let apiUrl = `${baseApiUrl}?startIndex=${startIndex}&resultsPerPage=${resultsPerPage}`;
                 
+                // Add keyword if provided
                 if (keyword) {
-                    filteredData = filteredData.filter(item => {
-                        const id = item.cve.id.toLowerCase();
-                        const description = item.cve.descriptions[0].value.toLowerCase();
-                        return id.includes(keyword) || description.includes(keyword);
-                    });
+                    apiUrl += `&keywordSearch=${encodeURIComponent(keyword)}`;
                 }
                 
+                // Add severity if selected
                 if (severity) {
-                    filteredData = filteredData.filter(item => {
-                        const itemSeverity = item.cve.metrics.cvssMetricV3[0].cvssData.baseSeverity;
-                        return itemSeverity === severity;
-                    });
+                    apiUrl += `&cvssV3Severity=${severity}`;
                 }
                 
-                // Sort by published date (newest first)
-                filteredData.sort((a, b) => {
-                    return new Date(b.cve.published) - new Date(a.cve.published);
-                });
-                
-                // Simulate API response
-                setTimeout(() => {
-                    // Hide loader
-                    loader.style.display = 'none';
-                    
-                    // Update total results
-                    totalResults = filteredData.length;
-                    
-                    // Apply pagination
-                    currentData = filteredData.slice(startIndex, startIndex + resultsPerPage);
-                    
-                    // Update stats
-                    updateStats(filteredData);
-                    
-                    // Render table
-                    renderTable(currentData);
-                    
-                    // Render pagination
-                    renderPagination();
-                }, 500); // Simulate loading delay
+                // Fetch data from the API
+                fetch(apiUrl)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Hide loader
+                        loader.style.display = 'none';
+                        
+                        // Update total results count
+                        totalResults = data.totalResults || 0;
+                        
+                        // Update current data
+                        currentData = data.vulnerabilities || [];
+                        
+                        // Update stats
+                        updateStats(data);
+                        
+                        // Render table
+                        renderTable(currentData);
+                        
+                        // Render pagination
+                        renderPagination();
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data:', error);
+                        loader.style.display = 'none';
+                        vulnerabilityTableBody.innerHTML = `
+                            <tr>
+                                <td colspan="6" class="no-results">
+                                    Veri yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.
+                                </td>
+                            </tr>
+                        `;
+                    });
             }
             
             function updateStats(data) {
@@ -493,18 +412,20 @@
                 lowSeverityCount = 0;
                 
                 // Count by severity
-                data.forEach(vuln => {
-                    const metrics = vuln.cve.metrics;
-                    if (metrics && metrics.cvssMetricV3) {
-                        const severity = metrics.cvssMetricV3[0].cvssData.baseSeverity;
-                        if (severity === 'HIGH' || severity === 'CRITICAL') highSeverityCount++;
-                        else if (severity === 'MEDIUM') mediumSeverityCount++;
-                        else if (severity === 'LOW') lowSeverityCount++;
-                    }
-                });
+                if (data.vulnerabilities) {
+                    data.vulnerabilities.forEach(vuln => {
+                        const metrics = vuln.cve.metrics;
+                        if (metrics && metrics.cvssMetricV3) {
+                            const severity = metrics.cvssMetricV3[0]?.cvssData?.baseSeverity;
+                            if (severity === 'HIGH' || severity === 'CRITICAL') highSeverityCount++;
+                            else if (severity === 'MEDIUM') mediumSeverityCount++;
+                            else if (severity === 'LOW') lowSeverityCount++;
+                        }
+                    });
+                }
                 
                 // Update display
-                totalVulnerabilitiesElement.textContent = data.length;
+                totalVulnerabilitiesElement.textContent = data.totalResults || 0;
                 highSeverityCountElement.textContent = highSeverityCount;
                 mediumSeverityCountElement.textContent = mediumSeverityCount;
                 lowSeverityCountElement.textContent = lowSeverityCount;
@@ -572,9 +493,12 @@
                     let referencesHtml = '<p>Referans bulunamadı</p>';
                     if (vuln.references && vuln.references.length > 0) {
                         referencesHtml = '<ul>';
-                        vuln.references.forEach(ref => {
+                        vuln.references.slice(0, 5).forEach(ref => {
                             referencesHtml += `<li><a href="${ref.url}" target="_blank">${ref.url}</a></li>`;
                         });
+                        if (vuln.references.length > 5) {
+                            referencesHtml += `<li>... ve ${vuln.references.length - 5} daha fazlası</li>`;
+                        }
                         referencesHtml += '</ul>';
                     }
                     
