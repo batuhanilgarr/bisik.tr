@@ -3,149 +3,377 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BİSİKTİR! 🤡</title>
+    <meta name="description" content="Bisik.tr - Fısıltı dolu bir dünya! Türkiye'nin en eğlenceli fısıltı platformu.">
+    <meta name="keywords" content="bisik, fısıltı, komik fısıltılar, gizli mesajlar, eğlence, Türkiye">
+    <title>Bisik.tr - Fısıltıları Duyabilenler İçin</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            background-color: black;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header h1 {
+            font-size: 3.5rem;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            margin: 1rem 0 0;
+        }
+        
+        .flying-whispers {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .whisper {
+            position: absolute;
+            opacity: 0;
+            font-size: 1rem;
+            color: rgba(255,255,255,0.8);
+            animation: fly 15s linear infinite;
+        }
+        
+        @keyframes fly {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px);
+                opacity: 0;
+            }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .ear-section {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        .ear-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            transform-origin: center;
+            animation: wiggle 3s ease-in-out infinite;
+            display: inline-block;
+        }
+        
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(10deg); }
+            75% { transform: rotate(-10deg); }
+        }
+        
+        .whisper-box {
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+        
+        .whisper-box h3 {
+            margin-top: 0;
+            color: #ff6b6b;
+        }
+        
+        .whisper-box:before {
+            content: '"';
+            position: absolute;
+            top: -30px;
+            left: 20px;
+            font-size: 5rem;
+            color: #ff8e53;
+            opacity: 0.3;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .feature {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #ff6b6b;
+        }
+        
+        .cta {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 3rem;
+            border-radius: 15px;
+        }
+        
+        .cta h2 {
+            margin-top: 0;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: white;
+            color: #ff6b6b;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .secret-message {
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .secret-message:hover:after {
+            content: "Şşşşt! Bir sır paylaşayım...";
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Easter Egg */
+        .konami-code {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease;
+        }
+        
+        .konami-content {
+            color: white;
             text-align: center;
-            color: black;
-            padding: 20px;
+            font-size: 2rem;
+            padding: 2rem;
         }
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 1);
-            max-width: 400px;
-            width: 100%;
-            border: 5px dashed red;
-            animation: blink 1s infinite;
-        }
-        @keyframes blink {
-            0%, 100% { border-color: red; }
-            50% { border-color: yellow; }
-        }
-        h1 {
-            margin-bottom: 20px;
-            font-size: 40px;
-            color: red;
-            text-shadow: 3px 3px yellow;
-            animation: zoom 0.5s infinite alternate;
-        }
-        @keyframes zoom {
-            from { transform: scale(1); }
-            to { transform: scale(1.1); }
-        }
-        button {
-            font-size: 18px;
-            font-weight: bold;
-            padding: 10px;
-            cursor: pointer;
-            margin-top: 15px;
-            border: 3px dashed;
-            animation: colorChange 0.5s infinite alternate;
-        }
-        @keyframes colorChange {
-            0%, 100% { background: red; color: yellow; border-color: yellow; }
-            50% { background: yellow; color: red; border-color: red; }
-        }
-        input {
-            margin-top: 15px;
-            padding: 8px;
-            font-size: 16px;
+        
+        .show-konami {
+            opacity: 1;
+            visibility: visible;
         }
     </style>
 </head>
 <body>
-    <div class="container" id="mainContainer">
-        <h1>🛑 BİSİKTİR! 🛑</h1>
-        <p id="ip">IP Adresin: Bilinmiyor... çünkü FBI peşinde! 🚔</p>
-        <p id="location">Konum: Uzay boşluğu... 🌌</p>
-        <p id="isp">İnternet Sağlayıcın: BİSİKTİRNET 🤡</p>
-        <p id="time">Saat: Zamanda kayboldun ⏳</p>
-        <button id="boomButton">Vine Boom!</button>
+    <!-- Header Section -->
+    <header>
+        <div class="flying-whispers">
+            <span class="whisper" style="top: 10%; left: 20%; animation-delay: 0s;">Psst!</span>
+            <span class="whisper" style="top: 30%; left: 80%; animation-delay: 2s;">Şşşt!</span>
+            <span class="whisper" style="top: 60%; left: 50%; animation-delay: 4s;">Bir şey söyleyeceğim...</span>
+            <span class="whisper" style="top: 70%; left: 30%; animation-delay: 6s;">Bu bir sır!</span>
+            <span class="whisper" style="top: 20%; left: 60%; animation-delay: 8s;">Kulağına fısıldayayım...</span>
+        </div>
+        <h1>BİSİK<span class="secret-message">.TR</span></h1>
+        <p>Türkiye'nin İlk ve Tek Komik Fısıltı Platformu</p>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <div class="ear-section">
+            <div class="ear-icon">👂</div>
+            <h2>Kulağınızı Yaklaştırın!</h2>
+            <p>Bisik.tr, internetteki en komik ve en ilginç fısıltıları sizlere ulaştırıyor. Bazen bir sır, bazen bir hikaye, bazen ise hiç duymak istemeyeceğiniz bir gerçek...</p>
+        </div>
         
-        <div id="loginContainer">
-            <input type="password" id="passwordInput" placeholder="Şifreyi gir">
-            <button id="submitButton">Giriş</button>
+        <div class="whisper-box">
+            <h3>Günün Fısıltısı:</h3>
+            <p>İnsanlar neden konuşmaz da fısıldar? Çünkü bazen en güzel şeyler sadece yakından duyulmalıdır. Kulaklarınızı açın ve internetin en komik fısıltılarını dinleyin!</p>
+        </div>
+        
+        <h2>Neden Bisik.tr?</h2>
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">🤣</div>
+                <h3>Komik Fısıltılar</h3>
+                <p>İnternetin en komik içeriklerini sizin kulağınıza fısıldıyoruz. Gülmek garantili!</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🔒</div>
+                <h3>Gizli Mesajlar</h3>
+                <p>Sadece özel kişilerin anlayabileceği gizli kodlar ve içerikler.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🎮</div>
+                <h3>İnteraktif Deneyim</h3>
+                <p>Basit bir site değil, tamamen interaktif bir fısıltı deneyimi!</p>
+            </div>
+        </div>
+        
+        <div class="cta">
+            <h2>Kulaklarınızı Açın!</h2>
+            <p>Bisik.tr'nin özel fısıltı dünyasına hoş geldiniz. Bize katılın ve kulağınıza söylenenleri paylaşın.</p>
+            <a href="#" class="btn" id="listen-button">Fısıltıları Dinle</a>
         </div>
     </div>
     
+    <!-- Easter Egg Modal -->
+    <div class="konami-code" id="konami-modal">
+        <div class="konami-content">
+            <h2>🎉 Gizli Fısıltıyı Buldun! 🎉</h2>
+            <p>Bu siteye giren 1000. kişi sensin! Tebrikler!</p>
+            <p>Bu mesajı sadece gerçek fısıltı avcıları görebilir...</p>
+            <button class="btn" onclick="document.getElementById('konami-modal').classList.remove('show-konami')">Gizli Fısıltıyı Kapat</button>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Bisik.tr - Tüm Fısıltı Hakları Saklıdır</p>
+        <p><small>Bu sitenin amacı tamamıyla eğlence içindir.</small></p>
+    </footer>
+    
+    <!-- JavaScript -->
     <script>
-        document.getElementById("boomButton").addEventListener("click", () => {
-            let audio = new Audio("https://www.myinstants.com/media/sounds/vine-boom.mp3");
-            audio.play();
+        // Komik fısıltılar listesi
+        const whispers = [
+            "Psst! İnternetin en komik yerinde olduğunu biliyor muydun?",
+            "Hey! Kulaklarını temizle ve dinle...",
+            "Bu bir sır, ama... aslında herkes biliyor!",
+            "Fısıltıların yankısı olmaz, ama dedikodular yayılır!",
+            "Bu siteyi kedim için yaptım, ama o fare peşinde!"
+        ];
+        
+        // Dinleme düğmesi için olay dinleyicisi
+        document.getElementById('listen-button').addEventListener('click', function(e) {
+            e.preventDefault();
+            const randomWhisper = whispers[Math.floor(Math.random() * whispers.length)];
+            alert('🔊 ' + randomWhisper);
         });
-
-        setTimeout(() => {
-            document.body.style.transition = "background 1s";
-            document.body.style.background = "red";
-            let container = document.getElementById("mainContainer");
-            if (container) {
-                container.innerHTML = "<h1>💀 HACKLENDİN! 💀</h1><p>Kaçamazsın... 🕵️‍♂️</p>";
-                document.body.style.transform = "rotate(180deg)";
-                setTimeout(() => {
-                    document.body.style.background = "black";
-                    document.body.style.transform = "rotate(0deg)";
-                    container.innerHTML = "<h1>Şaka Şaka 😂</h1><p>Git bir nefes al...</p>";
-                }, 5000);
-            }
-        }, 7000);
-
-        document.addEventListener("mousemove", function() {
-            let x = (Math.random() - 0.5) * 20;
-            let y = (Math.random() - 0.5) * 20;
-            document.body.style.transform = `translate(${x}px, ${y}px)`;
-        });
-
-        (function() {
-            var devtools = /./;
-            devtools.toString = function() {
-                setTimeout(() => {
-                    alert('Konsolu açtın... seni izliyorum. 🕵️‍♂️');
-                    document.body.innerHTML = "<h1 style='color:red;'>💀 GİZLİ BİRŞEYLER ÖĞRENMEYE ÇALIŞIYORSUN 💀</h1>";
-                }, 2000);
-            };
-            console.log('%c', devtools);
-        })();
-
-        const correctPassword = "clown";
-        let failCount = 0;
-
-        document.getElementById("submitButton").addEventListener("click", function() {
-            let input = document.getElementById("passwordInput").value.toLowerCase();
-            if (input === correctPassword) {
-                unlockSite();
-            } else {
-                failCount++;
-                shakeScreen();
-                if (failCount >= 3) {
-                    let container = document.getElementById("mainContainer");
-                    if (container) {
-                        container.innerHTML = "<h1>💀 HATA! 💀</h1><p>Artık çıkamazsın...</p>";
-                    }
-                    setTimeout(() => { 
-                        document.body.innerHTML = "<h1 style='color:red;'>💀 GEÇ KALDIN 💀</h1>"; 
-                    }, 3000);
+        
+        // Konami kodu için (↑ ↑ ↓ ↓ ← → ← → B A)
+        const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+        let konamiPosition = 0;
+        
+        document.addEventListener('keydown', function(e) {
+            const key = e.key;
+            const requiredKey = konamiCode[konamiPosition].toLowerCase();
+            
+            if (key.toLowerCase() === requiredKey) {
+                konamiPosition++;
+                
+                if (konamiPosition === konamiCode.length) {
+                    document.getElementById('konami-modal').classList.add('show-konami');
+                    konamiPosition = 0;
                 }
+            } else {
+                konamiPosition = 0;
             }
         });
-
-        function unlockSite() {
-            location.reload();
+        
+        // Dinamik fısıltılar oluşturan fonksiyon
+        function createWhispers() {
+            const header = document.querySelector('header');
+            setInterval(() => {
+                const whisper = document.createElement('span');
+                whisper.classList.add('whisper');
+                whisper.textContent = whispers[Math.floor(Math.random() * whispers.length)];
+                whisper.style.left = Math.random() * 100 + '%';
+                whisper.style.top = Math.random() * 100 + '%';
+                whisper.style.animationDuration = (10 + Math.random() * 10) + 's';
+                header.appendChild(whisper);
+                
+                // Animasyon tamamlandıktan sonra temizleme
+                setTimeout(() => {
+                    whisper.remove();
+                }, 15000);
+            }, 3000);
         }
         
-        function shakeScreen() {
-            document.body.style.transform = "rotate(5deg)";
-            setTimeout(() => { document.body.style.transform = "rotate(-5deg)"; }, 100);
-            setTimeout(() => { document.body.style.transform = "rotate(0deg)"; }, 200);
-        }
-    </script>
-</body>
-</html>
+        // Sayfa yüklendiğinde çalışacak fonksiyonlar
+        window.addEventListener('load', function() {
+            createWhispers();
