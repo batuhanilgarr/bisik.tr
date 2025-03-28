@@ -3,69 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Bisik.tr - Fısıltı dolu bir dünya! Türkiye'nin en eğlenceli fısıltı platformu.">
-    <meta name="keywords" content="bisik, fısıltı, komik fısıltılar, gizli mesajlar, eğlence, Türkiye">
-    <title>Bisik.tr - Fısıltıları Duyabilenler İçin</title>
-    
-
-    <!-- Accessibility Code for "bisik.tr" -->
-<script>
-/*
-
-Want to customize your button? visit our documentation page:
-
-https://login.equalweb.com/custom-button.taf
-
-*/
-window.interdeal = {
-    "sitekey": "05c360d8f0474ca92eedd56de09f4044",
-    "Position": "left",
-    "domains": {
-        "js": "https://cdn.equalweb.com/",
-        "acc": "https://access.equalweb.com/"
-    },
-    "Menulang": "EN",
-    "btnStyle": {
-        "vPosition": [
-            "80%",
-            "20%"
-        ],
-        "scale": [
-            "0.5",
-            "0.5"
-        ],
-        "color": {
-            "main": "#1c4bb6",
-            "second": "#ffffff"
-        },
-        "icon": {
-            "outline": false,
-            "type": 1,
-            "shape": "circle"
-        }
-    }
-};
-(function(doc, head, body){
-    var coreCall             = doc.createElement('script');
-    coreCall.src             = interdeal.domains.js + 'core/5.0.13/accessibility.js';
-    coreCall.defer           = true;
-    coreCall.integrity       = 'sha512-pk3CeR0KGJu+GfK2x2ybTSZ1o1qfua6XW2PRAxMWOhC85M3+CanPYmvRp6BOiW0/riZjWGerRN7+JH4wEF0wJQ==';
-    coreCall.crossOrigin     = 'anonymous';
-    coreCall.setAttribute('data-cfasync', true );
-    body? body.appendChild(coreCall) : head.appendChild(coreCall);
-})(document, document.head, document.body);
-</script>
-    
+    <title>Haftalık Antrenman Programı</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <!-- Header Section -->
+    <div class="container">
+        <header>
+            <h1>Antrenman Programı</h1>
+            <div class="current-day"></div>
+            <div class="workout-timer">
+                <span class="timer-display">00:00:00</span>
+                <button class="timer-btn start"><i class="fas fa-play"></i></button>
+                <button class="timer-btn pause"><i class="fas fa-pause"></i></button>
+                <button class="timer-btn reset"><i class="fas fa-redo"></i></button>
+            </div>
+        </header>
+        
+        <div class="warmup-reminder" style="display: none;">
+            <i class="fas fa-exclamation-circle"></i>
+            <span>Isınma hareketlerini unutma! (5-10 dakika kardio ve dinamik esneme)</span>
+        </div>
 
-    
-    
+        <div class="program-container">
+            <div class="day-selector">
+                <button class="day-btn" data-day="Pazartesi">Pazartesi</button>
+                <button class="day-btn" data-day="Salı">Salı</button>
+                <button class="day-btn" data-day="Çarşamba">Çarşamba</button>
+                <button class="day-btn" data-day="Perşembe">Perşembe</button>
+                <button class="day-btn" data-day="Cuma">Cuma</button>
+                <button class="day-btn" data-day="Cumartesi">Cumartesi</button>
+                <button class="day-btn" data-day="Pazar">Pazar</button>
+            </div>
+            
+            <div class="workout-display">
+                <h2 class="workout-title"></h2>
+                <div class="workout-content"></div>
+            </div>
 
-    
+            <div class="workout-notes">
+                <h3>Antrenman Notları</h3>
+                <textarea id="workout-notes-input" placeholder="Bugünkü antrenman hakkında notlar..."></textarea>
+                <button id="save-notes">Kaydet</button>
+                <div class="last-performance">
+                    <h4>Son Antrenman Performansı</h4>
+                    <div class="last-performance-content"></div>
+                </div>
+            </div>
+        </div>
 
-    
-    <!-- JavaScript -->
+        <div class="info-section">
+            <div class="info-toggle">
+                <button class="info-btn" data-info="dropset">Drop Set Nedir?</button>
+                <button class="info-btn" data-info="superset">Süper Set Nedir?</button>
+            </div>
+            <div class="info-content"></div>
+        </div>
+
+        <div class="cooldown-reminder" style="display: none;">
+            <i class="fas fa-exclamation-circle"></i>
+            <span>Soğuma hareketlerini unutma! (5-10 dakika hafif kardio ve statik esneme)</span>
+        </div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
