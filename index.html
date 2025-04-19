@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bisik.tr - Komik Karşılama</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
         body {
             font-family: 'Comic Sans MS', cursive, sans-serif;
             background-color: #f8e7b5;
@@ -15,24 +21,25 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
         
         .container {
+            width: 100%;
             max-width: 800px;
             padding: 20px;
         }
         
         h1 {
             color: #ff6600;
-            font-size: 4rem;
+            font-size: clamp(2.5rem, 8vw, 4rem); /* Responsive font size */
             margin-bottom: 20px;
             text-shadow: 3px 3px 0 #ffcc00;
         }
         
         p {
-            font-size: 1.5rem;
+            font-size: clamp(1rem, 4vw, 1.5rem); /* Responsive font size */
             margin-bottom: 30px;
             color: #333;
         }
@@ -41,12 +48,14 @@
             background-color: #ff6600;
             color: white;
             border: none;
-            padding: 15px 30px;
-            font-size: 1.5rem;
+            padding: clamp(10px, 3vw, 15px) clamp(20px, 5vw, 30px); /* Responsive padding */
+            font-size: clamp(1rem, 3vw, 1.5rem); /* Responsive font size */
             border-radius: 10px;
             cursor: pointer;
             box-shadow: 0 5px 0 #cc5200;
             transition: all 0.2s;
+            margin: 0 auto;
+            display: block;
         }
         
         .komik-buton:hover {
@@ -71,21 +80,23 @@
             align-items: center;
             justify-content: center;
             flex-direction: column;
+            padding: 10px;
         }
         
         .gif-container img {
-            max-width: 90%;
+            max-width: 100%;
             max-height: 80vh;
+            object-fit: contain;
         }
         
         .kapat-buton {
             margin-top: 20px;
-            padding: 10px 20px;
+            padding: clamp(8px, 2vw, 10px) clamp(15px, 4vw, 20px); /* Responsive padding */
             background-color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: clamp(0.9rem, 2.5vw, 1.2rem); /* Responsive font size */
         }
         
         .gizli {
@@ -94,6 +105,7 @@
         
         .ziplayan-metin {
             animation: zipla 1s infinite alternate;
+            display: inline-block;
         }
         
         @keyframes zipla {
@@ -101,7 +113,7 @@
                 transform: translateY(0);
             }
             to {
-                transform: translateY(-20px);
+                transform: translateY(-10px);
             }
         }
         
@@ -113,6 +125,69 @@
             position: absolute;
             top: -10px;
             z-index: -1;
+        }
+        
+        /* Çevrimiçi sayaç stili */
+        .online-sayac {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            z-index: 5;
+        }
+        
+        .online-sayac .dot {
+            width: 10px;
+            height: 10px;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: blink 1.5s infinite;
+        }
+        
+        @keyframes blink {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+        
+        /* Ekran boyutuna göre animasyon ayarlaması */
+        @media (max-width: 768px) {
+            @keyframes zipla {
+                from {
+                    transform: translateY(0);
+                }
+                to {
+                    transform: translateY(-5px); /* Mobilde daha az zıplama */
+                }
+            }
+        }
+        
+        /* Dokunmatik cihazlar için iyileştirmeler */
+        @media (hover: none) {
+            .komik-buton {
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
+        }
+        
+        /* Çok küçük ekranlar için */
+        @media (max-width: 320px) {
+            h1 {
+                margin-bottom: 15px;
+            }
+            p {
+                margin-bottom: 20px;
+            }
+            .kapat-buton {
+                margin-top: 15px;
+            }
         }
     </style>
 </head>
@@ -128,12 +203,45 @@
         <button class="kapat-buton" id="kapatButon">Kapat</button>
     </div>
     
+    <!-- Çevrimiçi sayaç -->
+    <div class="online-sayac">
+        <div class="dot"></div>
+        <span style="margin-right:5px;" id="onlineSayisi">0</span> kişi çevrimiçi
+    </div>
+    
     <script>
+        // Çevrimiçi sayaç fonksiyonu
+        function cevrimiçiSayacGuncelle() {
+            // Başlangıç sayısı (gerçekte sunucu tarafından sağlanmalı)
+            const baslangicSayisi = Math.floor(Math.random() * 15) + 5; // 5-20 arası rastgele başlangıç
+            document.getElementById('onlineSayisi').textContent = baslangicSayisi;
+            
+            // Belirli aralıklarla rastgele değişimler
+            setInterval(() => {
+                const mevcutSayi = parseInt(document.getElementById('onlineSayisi').textContent);
+                // %60 ihtimalle artış, %40 ihtimalle azalış
+                const degisim = Math.random() < 0.6 ? 1 : -1;
+                // Minimum 3 kişi olsun
+                const yeniSayi = Math.max(3, mevcutSayi + degisim);
+                document.getElementById('onlineSayisi').textContent = yeniSayi;
+            }, 3000); // Her 3 saniyede bir güncelle
+        }
+        
+        // Ekran boyutuna göre konfeti sayısını ayarlama
+        function konfetiSayisiHesapla() {
+            // Mobil için daha az konfeti
+            if (window.innerWidth < 768) {
+                return 50;
+            }
+            return 100;
+        }
+        
         // Konfeti efekti
         function konfetiOlustur() {
             const renkler = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+            const konfetiSayisi = konfetiSayisiHesapla();
             
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < konfetiSayisi; i++) {
                 setTimeout(() => {
                     const konfeti = document.createElement('div');
                     konfeti.classList.add('konfeti');
@@ -174,6 +282,21 @@
             document.getElementById('gifContainer').classList.add('gizli');
         });
         
+        // Mobil cihazlarda kaydırma engelleme/izin verme
+        function kaydirmaKontrol(izinVer) {
+            document.body.style.overflow = izinVer ? 'auto' : 'hidden';
+        }
+        
+        // GIF açıldığında kaydırmayı engelle
+        document.getElementById('komikButon').addEventListener('click', function() {
+            kaydirmaKontrol(false);
+        });
+        
+        // GIF kapatıldığında kaydırmaya izin ver
+        document.getElementById('kapatButon').addEventListener('click', function() {
+            kaydirmaKontrol(true);
+        });
+        
         // Sayfa yüklendiğinde rastgele komik sesler
         window.addEventListener('load', function() {
             const komikSesler = [
@@ -188,6 +311,9 @@
             setTimeout(() => {
                 alert(rastgeleSes);
             }, 1000);
+            
+            // Çevrimiçi sayacı başlat
+            cevrimiçiSayacGuncelle();
         });
     </script>
 </body>
