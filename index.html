@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bisik.tr - Komik Karşılama</title>
+    <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+    <script type="module">
+    	import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+    
+    	createChat({
+    		webhookUrl: 'http://localhost:5678/webhook/75c94d99-d4c2-4b72-b94a-347c741ce2a9/chat'
+    	});
+    </script>
     <style>
         * {
             box-sizing: border-box;
